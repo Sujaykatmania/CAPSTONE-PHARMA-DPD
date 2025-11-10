@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { doc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { db } from './firebase';
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [ailments, setAilments] = useState([]);
   const [newAilment, setNewAilment] = useState('');
 
   useEffect(() => {
-    if (auth.currentUser) {
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+    if (user) {
+      const userDocRef = doc(db, 'users', user.uid);
       const unsubscribe = onSnapshot(userDocRef, (doc) => {
         if (doc.exists()) {
           setAilments(doc.data().previous_ailments || []);
@@ -16,13 +16,13 @@ const Profile = () => {
       });
       return () => unsubscribe();
     }
-  }, []);
+  }, [user]);
 
   const handleAddAilment = async (e) => {
     e.preventDefault();
-    if (newAilment.trim() === '') return;
+    if (newAilment.trim() === '' || !user) return;
 
-    const userDocRef = doc(db, 'users', auth.currentUser.uid);
+    const userDocRef = doc(db, 'users', user.uid);
     await updateDoc(userDocRef, {
       previous_ailments: arrayUnion(newAilment)
     });

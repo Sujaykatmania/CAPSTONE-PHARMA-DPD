@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-import LoginPage from './LoginPage.jsx';
+import { LoginPage } from './LoginPage.jsx';
 import { HomePage } from './HomePage.jsx';
 
 function App() {
@@ -25,11 +26,14 @@ function App() {
     );
   }
 
-  if (!user) {
-    return <LoginPage />;
-  }
-
-  return <HomePage user={user} />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
+        <Route path="/" element={user ? <HomePage user={user} /> : <Navigate to="/login" />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

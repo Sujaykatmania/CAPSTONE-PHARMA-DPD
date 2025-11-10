@@ -17,7 +17,7 @@ const HomePage = ({ user }) => {
       </div>
       <main className="p-4">
         <div className="bg-white/30 backdrop-filter backdrop-blur-lg rounded-lg p-8">
-          <Profile />
+          <Profile user={user} />
         </div>
       </main>
     </div>

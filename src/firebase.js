@@ -22,9 +22,9 @@ const db = getFirestore(app);
 // Connect to emulators if running on localhost
 if (window.location.hostname === 'localhost') {
   try {
-    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-    connectFirestoreEmulator(db, 'localhost', 8080);
-    console.log('Connected to Firebase Emulators');
+    connectAuthEmulator(auth, 'http://localhost:9091', { disableWarnings: true });
+    connectFirestoreEmulator(db, 'localhost', 8081);
+    console.log('Connected to Firebase Emulators on ports 9091 and 8081');
   } catch (error) {
     console.log('Emulators already connected or error:', error.message);
   }
